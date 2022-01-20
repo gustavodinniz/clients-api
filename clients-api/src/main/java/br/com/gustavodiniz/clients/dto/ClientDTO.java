@@ -1,41 +1,41 @@
-package br.com.gustavodiniz.clients.entities;
+package br.com.gustavodiniz.clients.dto;
 
-import javax.persistence.*;
+import br.com.gustavodiniz.clients.entities.Client;
+
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.Objects;
 
-@Entity
-@Table(name = "tb_clients")
-public class Clients implements Serializable {
+public class ClientDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
-
     private String cpf;
-
     private Double income;
-
-    @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant birthDate;
-
     private Integer children;
 
-    public Clients() {
+    public ClientDTO() {
+
     }
 
-    public Clients(Long id, String name, String cpf, Double income, Instant birthDate, Integer children) {
+    public ClientDTO(Long id, String name, String cpf, Double income, Instant birthDate, Integer children) {
         this.id = id;
         this.name = name;
         this.cpf = cpf;
         this.income = income;
         this.birthDate = birthDate;
         this.children = children;
+    }
+
+    public ClientDTO(Client entity) {
+        this.id = entity.getId();
+        this.name = entity.getName();
+        this.cpf = entity.getCpf();
+        this.income = entity.getIncome();
+        this.birthDate = entity.getBirthDate();
+        this.children = entity.getChildren();
     }
 
     public Long getId() {
@@ -84,18 +84,5 @@ public class Clients implements Serializable {
 
     public void setChildren(Integer children) {
         this.children = children;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Clients clients = (Clients) o;
-        return Objects.equals(id, clients.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

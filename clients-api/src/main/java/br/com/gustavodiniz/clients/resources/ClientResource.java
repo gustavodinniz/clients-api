@@ -1,7 +1,7 @@
 package br.com.gustavodiniz.clients.resources;
 
-import br.com.gustavodiniz.clients.dto.ClientsDTO;
-import br.com.gustavodiniz.clients.services.ClientsService;
+import br.com.gustavodiniz.clients.dto.ClientDTO;
+import br.com.gustavodiniz.clients.services.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,31 +14,31 @@ import java.net.URI;
 
 @RestController
 @RequestMapping(value = "/clients")
-public class ClientsResource {
+public class ClientResource {
 
     @Autowired
-    private ClientsService service;
+    private ClientService service;
 
     @GetMapping
-    public ResponseEntity<Page<ClientsDTO>> findAll(
+    public ResponseEntity<Page<ClientDTO>> findAll(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
             @RequestParam(value = "direction", defaultValue = "ASC") String direction,
             @RequestParam(value = "orderBy", defaultValue = "name") String orderBy
     ) {
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
-        Page<ClientsDTO> list = service.findAllPaged(pageRequest);
+        Page<ClientDTO> list = service.findAllPaged(pageRequest);
         return ResponseEntity.ok().body(list);
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ClientsDTO> findById(@PathVariable Long id) {
-        ClientsDTO dto = service.findById(id);
+    public ResponseEntity<ClientDTO> findById(@PathVariable Long id) {
+        ClientDTO dto = service.findById(id);
         return ResponseEntity.ok().body(dto);
     }
 
     @PostMapping
-    public ResponseEntity<ClientsDTO> insert(@RequestBody ClientsDTO dto) {
+    public ResponseEntity<ClientDTO> insert(@RequestBody ClientDTO dto) {
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(dto.getId()).toUri();
@@ -46,7 +46,7 @@ public class ClientsResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<ClientsDTO> update(@PathVariable Long id, @RequestBody ClientsDTO dto) {
+    public ResponseEntity<ClientDTO> update(@PathVariable Long id, @RequestBody ClientDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok().body(dto);
     }
